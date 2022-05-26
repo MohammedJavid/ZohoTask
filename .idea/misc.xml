@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/dialog_rounded_edge.xml" value="0.1" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/edit_text_rounded_edge.xml" value="0.107" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_close.xml" value="0.1" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_cloud.xml" value="0.107" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_list.xml" value="0.107" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_no_internet.xml" value="0.1" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_search.xml" value="0.107" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/image_rounded_edge.xml" value="0.16666666666666666" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/fragment_home.xml" value="0.16666666666666666" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/fragment_phase1.xml" value="0.1" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/layout_list_item.xml" value="0.14666666666666667" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/layout_list_items.xml" value="0.11701388888888889" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/layout_load_state.xml" value="0.11631944444444445" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/layout_no_iternet_dialog.xml" value="0.11631944444444445" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

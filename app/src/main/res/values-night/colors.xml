@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="button_card_grey">#545365</color>
+    <color name="button_icon_green">#B7C1C3</color>
+    <color name="border_grey">#878A99</color>
+    <color name="card_bg_grey">#545365</color>
+</resources>
