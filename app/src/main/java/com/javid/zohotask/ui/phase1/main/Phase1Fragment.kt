@@ -76,6 +76,7 @@ class Phase1Fragment : Fragment() {
             clickListener = {result: Result -> navigateToDetail(result) },
             addToDatabase = {result: Result -> addToDatabase(result) }
         )
+
          binding.rclrViewItems.adapter = adapter.withLoadStateHeaderAndFooter(
              header = NetworkLoadStateAdapter {adapter.retry()},
              footer = NetworkLoadStateAdapter {adapter.retry()}
