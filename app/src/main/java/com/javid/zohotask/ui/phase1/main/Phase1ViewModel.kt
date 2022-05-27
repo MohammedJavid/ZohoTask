@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.javid.zohotask.MainActivity
-import com.javid.zohotask.data.model.modelclass.Result
-import com.javid.zohotask.data.repository.Phase1RepositoryImpl
+import com.javid.zohotask.data.model.modelclass.paging.Result
+import com.javid.zohotask.data.repository.phase1.Phase1RepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

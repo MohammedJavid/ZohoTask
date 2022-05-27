@@ -1,8 +1,8 @@
-package com.javid.zohotask.data.repository
+package com.javid.zohotask.data.repository.phase1
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
-import com.javid.zohotask.data.model.modelclass.Result
+import com.javid.zohotask.data.model.modelclass.paging.Result
 import kotlinx.coroutines.flow.Flow
 
 interface Phase1Repository {

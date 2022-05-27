@@ -1,4 +1,4 @@
-package com.javid.zohotask.data.model.modelclass
+package com.javid.zohotask.data.model.modelclass.paging
 
 import androidx.room.*
 import com.google.gson.annotations.SerializedName

@@ -1,4 +1,4 @@
-package com.javid.zohotask.data.repository
+package com.javid.zohotask.data.repository.phase1
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.javid.zohotask.data.db.ZohoTaskDao
-import com.javid.zohotask.data.model.modelclass.Result
+import com.javid.zohotask.data.model.modelclass.paging.Result
 import com.javid.zohotask.data.remote.ZohoTaskApiService
 import com.javid.zohotask.data.repository.paging.ZohoTaskPagingSource
 import kotlinx.coroutines.flow.Flow

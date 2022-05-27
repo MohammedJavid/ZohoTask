@@ -2,7 +2,7 @@ package com.javid.zohotask.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.javid.zohotask.data.model.modelclass.Result
+import com.javid.zohotask.data.model.modelclass.paging.Result
 
 @Dao
 interface ZohoTaskDao {

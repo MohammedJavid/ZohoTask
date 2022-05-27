@@ -2,7 +2,7 @@ package com.javid.zohotask.data.repository.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.javid.zohotask.data.model.modelclass.Result
+import com.javid.zohotask.data.model.modelclass.paging.Result
 import com.javid.zohotask.data.remote.ZohoTaskApiService
 import retrofit2.HttpException
 import java.io.IOException
@@ -16,7 +16,7 @@ class ZohoTaskPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Result> {
         return try {
             val position = params.key ?: page
-            val response = zohoTaskApiService.getData(position, 10)
+            val response = zohoTaskApiService.getData(position, 25)
             val data = response.body()?.results ?: emptyList()
             val responseData = mutableListOf<Result>()
             responseData.addAll(data)

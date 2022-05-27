@@ -7,8 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.phase1.main.Phase1Fragment">
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clActionBar"
         android:layout_width="match_parent"
@@ -42,7 +40,7 @@
             android:padding="@dimen/_10dp"
             android:layout_marginStart="@dimen/_20dp"
             android:layout_marginEnd="@dimen/_10dp"
-            android:text="Zoho Task"
+            android:text="@string/zoho_task"
 
             style="@style/text_black_bold_18"
             app:layout_constraintTop_toTopOf="parent"

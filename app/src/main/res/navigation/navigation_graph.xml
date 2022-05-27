@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/phase2Fragment"
-        android:name="com.javid.zohotask.ui.phase2.Hilt_Phase2Fragment"
+        android:name="com.javid.zohotask.ui.phase2.Phase2Fragment"
         android:label="fragment_phase2"
         tools:layout="@layout/fragment_phase2" />
     <fragment

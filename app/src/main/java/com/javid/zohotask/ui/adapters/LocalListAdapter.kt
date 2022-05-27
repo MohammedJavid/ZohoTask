@@ -2,7 +2,6 @@ package com.javid.zohotask.ui.adapters
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.javid.zohotask.data.model.modelclass.Result
+import com.javid.zohotask.data.model.modelclass.paging.Result
 import com.javid.zohotask.databinding.LayoutListItemBinding
 
 class LocalListAdapter(
@@ -34,7 +33,6 @@ class LocalListAdapter(
             binding.tvPhoneText.text = result.phone
 
             result.picture?.let {
-                Log.d("Image", "${it.large}")
                 Glide.with(context)
                     .load(it.large)
                     .error(com.google.android.material.R.drawable.mtrl_ic_error)

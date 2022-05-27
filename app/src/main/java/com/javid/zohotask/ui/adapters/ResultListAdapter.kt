@@ -2,7 +2,6 @@ package com.javid.zohotask.ui.adapters
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.javid.zohotask.data.model.modelclass.Result
+import com.javid.zohotask.data.model.modelclass.paging.Result
 import com.javid.zohotask.databinding.LayoutListItemBinding
 
 class ResultListAdapter(
@@ -31,6 +30,9 @@ class ResultListAdapter(
             clickListener: (Result) -> Unit,
             addToDatabase: (Result) -> Unit
         ) {
+
+            result?.let { addToDatabase(it) }
+
             binding.tvFirstNameText.text = result?.name?.title
                 .plus(". ")
                 .plus(result?.name?.first)
@@ -40,7 +42,6 @@ class ResultListAdapter(
             binding.tvPhoneText.text = result?.phone
 
             result?.picture?.let {
-                Log.d("Image", "${it.large}")
                 Glide.with(context)
                     .load(it.large)
                     .error(com.google.android.material.R.drawable.mtrl_ic_error)
@@ -75,7 +76,7 @@ class ResultListAdapter(
                 result?.let { it1 -> clickListener(it1) }
             }
 
-            result?.let { addToDatabase(it) }
+
         }
 
     }
