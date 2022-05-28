@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.google.gson.Gson
 import com.javid.zohotask.data.model.modelclass.paging.Result
+import com.javid.zohotask.data.model.modelclass.weather.Error
 import com.javid.zohotask.data.model.modelclass.weather.WeatherResponseModel
 import com.javid.zohotask.data.remote.ZohoTaskApiService
 import com.javid.zohotask.data.repository.paging.ZohoTaskPagingSource
@@ -22,12 +24,22 @@ class Phase2RepositoryImpl @Inject constructor(
     get() = _weatherData
 
     override suspend fun getWeatherData(url: String, city: String) {
+        _weatherData.value = Resource.loading(null)
         val response = zohoTaskApiService.getWeatherData(url, city)
 
         if (response.isSuccessful) {
             _weatherData.value = Resource.success(response.body())
         } else {
-            _weatherData.value = Resource.error(response.message(), response.code(), null)
+            if (response.code() == 400) {
+
+                val error = Gson().fromJson(
+                    response.errorBody()!!.charStream(),
+                    Error::class.java
+                )
+                _weatherData.value = Resource.error(error.message ?: "No matching location found", response.code(), null)
+            } else {
+                _weatherData.value = Resource.error(response.message(), response.code(), null)
+            }
         }
     }
 
@@ -38,5 +50,4 @@ class Phase2RepositoryImpl @Inject constructor(
             ZohoTaskPagingSource(zohoTaskApiService)
         }.flow
     }
-
 }

@@ -15,15 +15,14 @@ import javax.inject.Inject
 @HiltViewModel
 class Phase2ViewModel @Inject constructor(private val phase2RepositoryImpl: Phase2RepositoryImpl): ViewModel() {
 
-    var pagingResult: Flow<PagingData<Result>>? = null
     val weatherData = phase2RepositoryImpl.weatherData
+    var pagingResult: Flow<PagingData<Result>>? = null
 
     init {
         if (MainActivity.hasInternet) {
             pagingResult = phase2RepositoryImpl.getResult().cachedIn(viewModelScope)
         }
     }
-
     fun getWeatherData(url: String, city: String) {
         viewModelScope.launch {
             phase2RepositoryImpl.getWeatherData(url, city)

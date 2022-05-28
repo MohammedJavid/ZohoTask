@@ -2,6 +2,7 @@ package com.javid.zohotask.ui.adapters
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,8 @@ import com.javid.zohotask.databinding.LayoutListItemBinding
 class ResultListAdapter(
     private val context: Context,
     private val clickListener: (Result) -> Unit,
-    private val addToDatabase: (Result) -> Unit
+    private val addToDatabase: ((Result) -> Unit)?,
+    private val getFirstWeatherData: ((Result) -> Unit)?
 ): PagingDataAdapter<Result, ResultListAdapter.ResultListViewHolder>(COMPARATOR) {
 
     class ResultListViewHolder(private val binding: LayoutListItemBinding):
@@ -28,10 +30,16 @@ class ResultListAdapter(
             context: Context,
             result: Result?,
             clickListener: (Result) -> Unit,
-            addToDatabase: (Result) -> Unit
+            addToDatabase: ((Result) -> Unit)?,
+            getFirstWeatherData: ((Result) -> Unit)?,
+            position: Int
         ) {
 
-            result?.let { addToDatabase(it) }
+            result?.let { addToDatabase?.invoke(it) }
+
+            if (position == 0) {
+                result?.let { getFirstWeatherData?.invoke(it) }
+            }
 
             binding.tvFirstNameText.text = result?.name?.title
                 .plus(". ")
@@ -83,7 +91,7 @@ class ResultListAdapter(
 
     override fun onBindViewHolder(holder: ResultListViewHolder, position: Int) {
         getItem(position).let {
-            holder.bind(context, it, clickListener, addToDatabase)
+            holder.bind(context, it, clickListener, addToDatabase, getFirstWeatherData, position)
         }
     }
 

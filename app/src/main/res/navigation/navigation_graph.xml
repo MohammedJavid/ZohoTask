@@ -30,7 +30,11 @@
         android:id="@+id/phase2Fragment"
         android:name="com.javid.zohotask.ui.phase2.Phase2Fragment"
         android:label="fragment_phase2"
-        tools:layout="@layout/fragment_phase2" />
+        tools:layout="@layout/fragment_phase2" >
+        <action
+            android:id="@+id/action_phase2Fragment_to_randomLocationWeatherFragment"
+            app:destination="@id/randomLocationWeatherFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.javid.zohotask.ui.phase1.detail.DetailFragment"
@@ -40,4 +44,9 @@
             android:name="email"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/randomLocationWeatherFragment"
+        android:name="com.javid.zohotask.ui.phase2.RandomLocationWeatherFragment"
+        android:label="fragment_random_location_weather"
+        tools:layout="@layout/fragment_random_location_weather" />
 </navigation>

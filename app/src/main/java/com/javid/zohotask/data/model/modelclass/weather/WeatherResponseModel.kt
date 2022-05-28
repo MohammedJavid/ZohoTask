@@ -7,5 +7,7 @@ data class WeatherResponseModel(
     @SerializedName("current")
     val current: Current?,
     @SerializedName("location")
-    val location: Location?
+    val location: Location?,
+    @SerializedName("error")
+    val error: Error?
 )

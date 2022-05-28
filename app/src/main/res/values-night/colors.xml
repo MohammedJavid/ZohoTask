@@ -4,4 +4,6 @@
     <color name="button_icon_green">#B7C1C3</color>
     <color name="border_grey">#878A99</color>
     <color name="card_bg_grey">#545365</color>
+    <color name="progress_grey">#B7C1C3</color>
+    <color name="phase2_grey">#545365</color>
 </resources>

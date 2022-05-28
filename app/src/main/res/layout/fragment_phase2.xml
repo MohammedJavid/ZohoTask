@@ -1,14 +1,399 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Phase2Fragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    tools:context=".ui.phase2.Phase2Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcViewMain"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/_0dp"
+        android:layout_marginHorizontal="@dimen/_15dp"
+        app:cardElevation="@dimen/_20dp"
+        app:cardCornerRadius="@dimen/_20dp"
+        app:cardBackgroundColor="@color/phase2_grey"
+        android:layout_marginVertical="@dimen/_20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gd85">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMcViewData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_0dp"
+                    android:src="@drawable/ic_location"
+                    android:tint="@color/white"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintTop_toTopOf="@id/tvLocationText"
+                    app:layout_constraintBottom_toBottomOf="@id/tvLocationText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvLocationText"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLocationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty"
+                    style="@style/text_white_bold_18"
+                    android:layout_margin="@dimen/_10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/gd10"
+                    app:layout_constraintStart_toEndOf="@id/ivLocation"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd10"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="@dimen/_0dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent=".15"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivCondition"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:padding="@dimen/_15dp"
+                    android:scaleType="fitXY"
+                    android:layout_margin="@dimen/_15dp"
+                    app:layout_constraintTop_toBottomOf="@id/gd10"
+                    app:layout_constraintBottom_toTopOf="@id/gd40"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd40"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="@dimen/_0dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent=".4"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTemperatureText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    style="@style/text_white_bold_48"
+                    android:layout_margin="@dimen/_5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/gd40"
+                    app:layout_constraintBottom_toTopOf="@id/tvConditionText"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvConditionText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty"
+                    style="@style/text_white_bold_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTemperatureText"
+                    app:layout_constraintBottom_toTopOf="@id/tvDateText"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty"
+                    style="@style/text_white_bold_14"
+                    android:layout_margin="@dimen/_5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvConditionText"
+                    app:layout_constraintBottom_toTopOf="@id/gd70"/>
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd70"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="@dimen/_0dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent=".7"/>
+
+                <View
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="@dimen/_2dp"
+                    app:layout_constraintTop_toTopOf="@id/gd70"
+                    app:layout_constraintBottom_toBottomOf="@id/gd70"
+                    android:background="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="@dimen/_15dp"
+                    android:layout_marginEnd="@dimen/_15dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivAirQuality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_air_quality"
+                    android:padding="@dimen/_5dp"
+                    android:tint="@color/white"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:layout_constraintTop_toBottomOf="@id/gd70"
+                    app:layout_constraintBottom_toTopOf="@id/tvAirQualityText"
+                    app:layout_constraintStart_toStartOf="@id/tvAirQuality"
+                    app:layout_constraintEnd_toEndOf="@id/tvAirQuality"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivHumidity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_humidity"
+                    android:padding="@dimen/_5dp"
+                    android:tint="@color/white"
+                    app:layout_constraintTop_toTopOf="@id/ivAirQuality"
+                    app:layout_constraintBottom_toBottomOf="@id/ivAirQuality"
+                    app:layout_constraintStart_toStartOf="@id/tvHumidity"
+                    app:layout_constraintEnd_toEndOf="@id/tvHumidity"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivWind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_air"
+                    android:padding="@dimen/_5dp"
+                    android:tint="@color/white"
+                    app:layout_constraintTop_toTopOf="@id/ivAirQuality"
+                    app:layout_constraintBottom_toBottomOf="@id/ivAirQuality"
+                    app:layout_constraintStart_toStartOf="@id/tvWind"
+                    app:layout_constraintEnd_toEndOf="@id/tvWind"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAirQualityText"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/text_white_bold_14"
+                    android:text="@string/empty"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_5dp"
+                    app:layout_constraintStart_toStartOf="@id/tvAirQuality"
+                    app:layout_constraintEnd_toEndOf="@id/tvAirQuality"
+                    app:layout_constraintTop_toBottomOf="@id/ivAirQuality"
+                    app:layout_constraintBottom_toTopOf="@id/tvAirQuality"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvHumidityText"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/text_white_bold_14"
+                    android:text="@string/empty"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="@id/tvHumidity"
+                    app:layout_constraintEnd_toEndOf="@id/tvHumidity"
+                    app:layout_constraintTop_toTopOf="@id/tvAirQualityText"
+                    app:layout_constraintBottom_toBottomOf="@id/tvAirQualityText"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvWindText"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/text_white_bold_14"
+                    android:text="@string/empty"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="@id/tvWind"
+                    app:layout_constraintEnd_toEndOf="@id/tvWind"
+                    app:layout_constraintTop_toTopOf="@id/tvAirQualityText"
+                    app:layout_constraintBottom_toBottomOf="@id/tvAirQualityText"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAirQuality"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/text_white_regular_14"
+                    android:text="@string/air_quality"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_2dp"
+                    android:layout_marginHorizontal="@dimen/_10dp"
+                    android:layout_marginBottom="@dimen/_10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvHumidity"
+                    app:layout_constraintTop_toBottomOf="@id/tvAirQualityText"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvHumidity"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/text_white_regular_14"
+                    android:text="@string/humidity"
+                    android:gravity="center"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginEnd="@dimen/_10dp"
+                    app:layout_constraintStart_toEndOf="@id/tvAirQuality"
+                    app:layout_constraintEnd_toStartOf="@id/tvWind"
+                    app:layout_constraintTop_toTopOf="@id/tvAirQuality"
+                    app:layout_constraintBottom_toBottomOf="@id/tvAirQuality"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvWind"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/text_white_regular_14"
+                    android:text="@string/wind"
+                    android:gravity="center"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginEnd="@dimen/_10dp"
+                    app:layout_constraintStart_toEndOf="@id/tvHumidity"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvAirQuality"
+                    app:layout_constraintBottom_toBottomOf="@id/tvAirQuality"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMcViewError"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMcViewErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    style="@style/text_white_bold_14"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMcViewGpsError"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMcViewGpsErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    style="@style/text_white_bold_14"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/btnGpsError"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnGpsError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/turn_on_gps"
+                    style="@style/text_white_bold_14"
+                    android:padding="@dimen/_15dp"
+                    android:layout_margin="@dimen/_20dp"
+                    android:background="@drawable/edit_text_rounded_edge"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvMcViewGpsErrorText"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMcViewProgressBar"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/mcViewProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@color/progress_grey"
+                    app:layout_constraintStart_toStartOf="parent"
+                    style="?android:attr/progressBarStyleLarge"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gd85"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/_0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".85"/>
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRandomWeather"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_30dp"
+        android:layout_marginEnd="@dimen/_30dp"
+        android:elevation="@dimen/_10dp"
+        android:text="@string/random_weather"
+        style="@style/text_white_bold_14"
+        android:background="@drawable/button_rounded_edge"
+        app:layout_constraintTop_toBottomOf="@id/gd85"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--    <com.google.android.material.card.MaterialCardView-->
+<!--        android:layout_width="@dimen/_0dp"-->
+<!--        android:layout_height="@dimen/_0dp"-->
+<!--        app:cardCornerRadius="@dimen/_10dp"-->
+<!--        app:cardElevation="@dimen/_20dp"-->
+<!--        app:cardBackgroundColor="@color/button_icon_green"-->
+<!--        android:layout_margin="@dimen/_10dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/gd85"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent">-->
+<!--        -->
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/btnRandomWeather"-->
+<!--                android:layout_width="@dimen/_0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_30dp"-->
+<!--                android:layout_marginEnd="@dimen/_30dp"-->
+<!--                android:elevation="@dimen/_10dp"-->
+<!--                android:text="@string/random_weather"-->
+<!--                style="@style/text_black_bold_18"-->
+<!--                android:background="@drawable/button_rounded_edge"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"/>-->
+<!--            -->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--        -->
+<!--    </com.google.android.material.card.MaterialCardView>-->
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

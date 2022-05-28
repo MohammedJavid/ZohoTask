@@ -76,7 +76,8 @@ class Phase1Fragment : Fragment() {
         adapter = ResultListAdapter(
             context = requireActivity(),
             clickListener = {result: Result -> navigateToDetail(result) },
-            addToDatabase = {result: Result -> addToDatabase(result) }
+            addToDatabase = {result: Result -> addToDatabase(result) },
+            getFirstWeatherData = null
         )
 
          binding.rclrViewItems.adapter = adapter.withLoadStateHeaderAndFooter(
