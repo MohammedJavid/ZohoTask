@@ -22,9 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val phase1ViewModel: Phase1ViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        val splashScreen = installSplashScreen()
-
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
