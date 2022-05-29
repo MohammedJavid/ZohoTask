@@ -1,13 +1,12 @@
 package com.javid.zohotask.ui.phase2
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -32,6 +31,7 @@ class RandomLocationWeatherFragment : Fragment() {
     private lateinit var binding: FragmentRandomLocationWeatherBinding
     private val phase2ViewModel: Phase2ViewModel by viewModels()
     private lateinit var adapter: ResultListAdapter
+
     companion object {
         var city: String? = null
     }
@@ -50,18 +50,17 @@ class RandomLocationWeatherFragment : Fragment() {
     }
 
 
-
     private fun setPagingAdapter() {
         adapter = ResultListAdapter(
             context = requireActivity(),
-            clickListener = {result: Result -> getWeatherData(result) },
+            clickListener = { result: Result -> getWeatherData(result) },
             addToDatabase = null,
-            getFirstWeatherData = {result: Result -> getWeatherData(result)}
+            getFirstWeatherData = { result: Result -> getWeatherData(result) }
         )
 
         binding.rclrViewUsers.adapter = adapter.withLoadStateHeaderAndFooter(
-            header = NetworkLoadStateAdapter {adapter.retry()},
-            footer = NetworkLoadStateAdapter {adapter.retry()}
+            header = NetworkLoadStateAdapter { adapter.retry() },
+            footer = NetworkLoadStateAdapter { adapter.retry() }
         )
 
         adapter.addLoadStateListener { loadState ->
@@ -71,16 +70,17 @@ class RandomLocationWeatherFragment : Fragment() {
             val errorState = loadState.source.append as? LoadState.Error
                 ?: loadState.source.prepend as? LoadState.Error
 
-            if(errorState is LoadState.Error) {
+            if (errorState is LoadState.Error) {
                 binding.tvErrorText.text = errorState.error.message
                 binding.clError.isVisible = true
             }
 
             if (loadState.source.refresh is LoadState.Loading) {
                 binding.clError.isVisible = false
-            } else if(loadState.source.refresh is LoadState.Loading &&
+            } else if (loadState.source.refresh is LoadState.Loading &&
                 loadState.append.endOfPaginationReached &&
-                adapter.itemCount < 1) {
+                adapter.itemCount < 1
+            ) {
                 binding.tvErrorText.text = getString(R.string.no_data)
                 binding.clError.isVisible = true
             } else {
@@ -117,49 +117,81 @@ class RandomLocationWeatherFragment : Fragment() {
                     }
                     Status.SUCCESS -> {
                         if (it.data != null) {
-                            Log.d("setObservers: ", it.data.toString())
                             val weatherData = it.data
                             binding.tvRandomLocationText.text = city
-                            binding.tvTemperatureText.text = weatherData.current?.tempC.toString().plus("\u2103")
+                            binding.tvTemperatureText.text =
+                                weatherData.current?.tempC.toString().plus("\u2103")
                             binding.tvDateText.text = weatherData.current?.lastUpdated?.let { it1 ->
                                 getFormattedDate(
                                     it1
                                 )
                             }
                             binding.tvConditionText.text = weatherData.current?.condition?.text
-                            binding.tvHumidityText.text = weatherData.current?.humidity.toString().plus("%")
-                            binding.tvWindText.text = weatherData.current?.windKph.toString().plus("Kmph")
-                            binding.tvAirQualityText.text = when(weatherData.current?.airQuality?.usEpaIndex) {
-                                1 -> { "Good" }
-                                2 -> { "Moderate" }
-                                3,4,5 -> { "Unhealthy" }
-                                else -> { "Hazardous" }
-                            }
+                            binding.tvHumidityText.text =
+                                weatherData.current?.humidity.toString().plus("%")
+                            binding.tvWindText.text =
+                                weatherData.current?.windKph.toString().plus("Kmph")
+                            binding.tvAirQualityText.text =
+                                when (weatherData.current?.airQuality?.usEpaIndex) {
+                                    1 -> {
+                                        "Good"
+                                    }
+                                    2 -> {
+                                        "Moderate"
+                                    }
+                                    3, 4, 5 -> {
+                                        "Unhealthy"
+                                    }
+                                    else -> {
+                                        "Hazardous"
+                                    }
+                                }
 
                             when {
-                                weatherData.current?.condition?.text?.lowercase()?.contains("cloud") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("cloud") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.cloudy))
+                                                requireActivity(), R.drawable.cloudy
+                                            )
+                                        )
                                 }
-                                weatherData.current?.condition?.text?.lowercase()?.contains("mist") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("mist") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.mist))
+                                                requireActivity(), R.drawable.mist
+                                            )
+                                        )
                                 }
-                                weatherData.current?.condition?.text?.lowercase()?.contains("rain") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("fog") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.rainy))
+                                                requireActivity(), R.drawable.mist
+                                            )
+                                        )
                                 }
-                                weatherData.current?.condition?.text?.lowercase()?.contains("sunny") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("rain") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.sunny))
+                                                requireActivity(), R.drawable.rainy
+                                            )
+                                        )
+                                }
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("sunny") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(), R.drawable.sunny
+                                            )
+                                        )
                                 }
                                 else -> {
                                     binding.ivWeatherCondition.setImageDrawable(null)
@@ -182,7 +214,9 @@ class RandomLocationWeatherFragment : Fragment() {
                     Status.ERROR -> {
                         binding.clMcViewProgressBar.visibility = View.GONE
                         binding.clMcViewRandomError.visibility = View.VISIBLE
-                        binding.ivWeatherCondition.setImageDrawable(null)
+                        binding.ivWeatherCondition.setImageDrawable(
+                            ContextCompat.getDrawable(requireActivity(), R.drawable.blankcard)
+                        )
                         binding.tvMcViewRandomErrorText.text = it.message ?: "Location Not found"
                         binding.clWeatherData.visibility = View.GONE
                     }
@@ -194,7 +228,7 @@ class RandomLocationWeatherFragment : Fragment() {
     private fun getFormattedDate(timeStamp: String): String {
         return try {
             val apiFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
-            val  uiFormat = SimpleDateFormat("dd MMM yyyy hh:mm a")
+            val uiFormat = SimpleDateFormat("dd MMM yyyy hh:mm a")
             uiFormat.format(
                 Date(
                     apiFormat.parse(timeStamp)!!.time

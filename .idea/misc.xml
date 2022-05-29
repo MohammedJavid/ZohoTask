@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/button_rounded_edge.xml" value="0.1" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/dialog_rounded_edge.xml" value="0.1" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/edit_text_rounded_edge.xml" value="0.107" />
@@ -12,6 +13,7 @@
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_cloud.xml" value="0.107" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_drops.xml" value="0.1" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_humidity.xml" value="0.1" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_list.xml" value="0.107" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_no_internet.xml" value="0.1" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/drawable/ic_search.xml" value="0.107" />
@@ -26,6 +28,7 @@
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/layout_list_items.xml" value="0.11701388888888889" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/layout_load_state.xml" value="0.11631944444444445" />
         <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/layout/layout_no_iternet_dialog.xml" value="0.11631944444444445" />
+        <entry key="..\:/Android Projects/ZohoTask/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -2,7 +2,6 @@ package com.javid.zohotask.ui.phase1.detail
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.javid.zohotask.R
 import com.javid.zohotask.databinding.FragmentDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -41,7 +39,6 @@ class DetailFragment : Fragment() {
     private fun getDataByEmail(email: String) {
         lifecycleScope.launch {
             detailViewModel.getDataByEmail(email).observe(viewLifecycleOwner) {
-                Log.d("getDataByEmail: ", it.toString())
                 binding.tvFullNameText.text = it.name?.title
                     .plus(". ")
                     .plus(it.name?.first)

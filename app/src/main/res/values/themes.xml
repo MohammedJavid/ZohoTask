@@ -97,4 +97,11 @@
         <item name="android:windowBackground">@drawable/dialog_rounded_edge</item>
     </style>
 
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.ZohoTask</item>
+        <item name="windowSplashScreenBackground">@color/grey</item>
+
+    </style>
+
 </resources>

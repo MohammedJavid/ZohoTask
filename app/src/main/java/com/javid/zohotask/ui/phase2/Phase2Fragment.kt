@@ -221,6 +221,12 @@ class Phase2Fragment : Fragment() {
                                             ContextCompat.getDrawable(
                                                 requireActivity(),R.drawable.mist))
                                 }
+                                weatherData.current?.condition?.text?.lowercase()?.contains("fog") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.mist))
+                                }
                                 weatherData.current?.condition?.text?.lowercase()?.contains("rain") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(

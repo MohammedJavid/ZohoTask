@@ -1,16 +1,12 @@
 package com.javid.zohotask
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Intent
 import android.content.IntentFilter
-import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
-import androidx.lifecycle.MutableLiveData
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.javid.zohotask.databinding.ActivityMainBinding
 import com.javid.zohotask.databinding.LayoutNoIternetDialogBinding
 import com.javid.zohotask.ui.phase1.main.Phase1ViewModel
@@ -26,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     private val phase1ViewModel: Phase1ViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
