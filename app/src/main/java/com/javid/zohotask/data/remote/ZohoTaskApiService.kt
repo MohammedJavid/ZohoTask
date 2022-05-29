@@ -9,7 +9,7 @@ import retrofit2.http.Url
 
 interface ZohoTaskApiService {
 
-    @GET("?seed=zoho")
+    @GET("?")
     suspend fun getData(@Query("page") page: Int, @Query("results") results: Int): Response<ResponseModel>
 
     @GET
