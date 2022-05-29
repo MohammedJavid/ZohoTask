@@ -9,9 +9,11 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.lifecycle.MutableLiveData
 import com.javid.zohotask.databinding.ActivityMainBinding
 import com.javid.zohotask.databinding.LayoutNoIternetDialogBinding
+import com.javid.zohotask.ui.phase1.main.Phase1ViewModel
 import com.javid.zohotask.utils.ConnectivityCheck
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,12 +23,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var connectivityCheck: ConnectivityCheck? = null
     private var noInternetDialog: AlertDialog?  = null
+    private val phase1ViewModel: Phase1ViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mainActivity = this
         supportActionBar?.hide()
     }
 
@@ -49,7 +51,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         var hasInternet = false
-        var mainActivity: MainActivity? = null
     }
 
     private fun createNoInternetDialog() {
@@ -60,6 +61,11 @@ class MainActivity : AppCompatActivity() {
             .setView(dialogBinding.root)
             .setCancelable(false)
             .create()
+    }
+
+    override fun onDestroy() {
+        phase1ViewModel.deleteAll()
+        super.onDestroy()
     }
 
 }

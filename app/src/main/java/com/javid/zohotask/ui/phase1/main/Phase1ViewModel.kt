@@ -31,4 +31,11 @@ class Phase1ViewModel @Inject constructor(
         }
     }
 
+    fun deleteAll() {
+        viewModelScope.launch {
+            phase1RepositoryImpl.deleteAll()
+        }
+    }
+
+
 }

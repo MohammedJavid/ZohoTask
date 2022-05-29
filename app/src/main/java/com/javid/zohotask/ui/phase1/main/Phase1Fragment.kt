@@ -115,6 +115,7 @@ class Phase1Fragment : Fragment() {
                 adapter.submitData(it)
             }
         }
+        binding.ivSearch.isClickable = true
     }
 
     private fun setLocalAdapter() {
@@ -183,6 +184,5 @@ class Phase1Fragment : Fragment() {
             binding.clError.isVisible = false
         }
     }
-
 
 }

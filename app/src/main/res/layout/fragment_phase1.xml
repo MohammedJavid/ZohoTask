@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_search"
             android:padding="@dimen/_10dp"
+            android:clickable="false"
             android:layout_marginEnd="@dimen/_20dp"
             android:background="@drawable/dialog_rounded_edge"
             app:layout_constraintTop_toTopOf="parent"

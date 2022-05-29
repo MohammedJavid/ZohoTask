@@ -9,4 +9,5 @@ interface Phase1Repository {
     fun getResult(): Flow<PagingData<Result>>
     suspend fun addToDatabase(result: Result)
     fun getAllData(): LiveData<List<Result>>
+    suspend fun deleteAll()
 }

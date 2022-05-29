@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class RandomLocationWeatherFragment : Fragment() {
@@ -118,7 +121,11 @@ class RandomLocationWeatherFragment : Fragment() {
                             val weatherData = it.data
                             binding.tvRandomLocationText.text = city
                             binding.tvTemperatureText.text = weatherData.current?.tempC.toString().plus("\u2103")
-                            binding.tvDateText.text = weatherData.current?.lastUpdated
+                            binding.tvDateText.text = weatherData.current?.lastUpdated?.let { it1 ->
+                                getFormattedDate(
+                                    it1
+                                )
+                            }
                             binding.tvConditionText.text = weatherData.current?.condition?.text
                             binding.tvHumidityText.text = weatherData.current?.humidity.toString().plus("%")
                             binding.tvWindText.text = weatherData.current?.windKph.toString().plus("Kmph")
@@ -127,6 +134,36 @@ class RandomLocationWeatherFragment : Fragment() {
                                 2 -> { "Moderate" }
                                 3,4,5 -> { "Unhealthy" }
                                 else -> { "Hazardous" }
+                            }
+
+                            when {
+                                weatherData.current?.condition?.text?.lowercase()?.contains("cloud") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.cloudy))
+                                }
+                                weatherData.current?.condition?.text?.lowercase()?.contains("mist") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.mist))
+                                }
+                                weatherData.current?.condition?.text?.lowercase()?.contains("rain") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.rainy))
+                                }
+                                weatherData.current?.condition?.text?.lowercase()?.contains("sunny") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.sunny))
+                                }
+                                else -> {
+                                    binding.ivWeatherCondition.setImageDrawable(null)
+                                }
                             }
 
                             weatherData.current?.condition?.icon?.let { it1 ->
@@ -145,6 +182,7 @@ class RandomLocationWeatherFragment : Fragment() {
                     Status.ERROR -> {
                         binding.clMcViewProgressBar.visibility = View.GONE
                         binding.clMcViewRandomError.visibility = View.VISIBLE
+                        binding.ivWeatherCondition.setImageDrawable(null)
                         binding.tvMcViewRandomErrorText.text = it.message ?: "Location Not found"
                         binding.clWeatherData.visibility = View.GONE
                     }
@@ -153,5 +191,18 @@ class RandomLocationWeatherFragment : Fragment() {
         }
     }
 
+    private fun getFormattedDate(timeStamp: String): String {
+        return try {
+            val apiFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+            val  uiFormat = SimpleDateFormat("dd MMM yyyy hh:mm a")
+            uiFormat.format(
+                Date(
+                    apiFormat.parse(timeStamp)!!.time
+                )
+            )
+        } catch (e: Exception) {
+            "-"
+        }
+    }
 
 }

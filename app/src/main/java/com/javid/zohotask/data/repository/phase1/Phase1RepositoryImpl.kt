@@ -35,4 +35,9 @@ class Phase1RepositoryImpl @Inject constructor(
         return zohoTaskDao.getAllData()
     }
 
+    override suspend fun deleteAll() {
+        zohoTaskDao.deleteAll()
+    }
+
+
 }

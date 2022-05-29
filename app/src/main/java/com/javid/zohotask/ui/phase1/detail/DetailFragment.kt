@@ -47,10 +47,10 @@ class DetailFragment : Fragment() {
                     .plus(it.name?.first)
                     .plus(" ")
                     .plus(it.name?.last)
-                binding.tvEmailText.text = it.email ?: "-"
+                binding.tvEmailText.text = it.email
                 binding.tvPhoneText.text = it.phone ?: "-"
                 binding.tvDobText.text = it.dob?.date?.let { it1 -> getFormattedDate(it1) }
-                binding.tvAgeText.text = it.dob?.age.toString() ?: "-"
+                binding.tvAgeText.text = it.dob?.age.toString()
                 binding.tvAddressText.text = it.location?.street?.number.toString()
                     .plus(", ")
                     .plus(it.location?.street?.name)

@@ -7,7 +7,6 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -34,8 +34,8 @@ import com.javid.zohotask.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
-
 
 @AndroidEntryPoint
 class Phase2Fragment : Fragment() {
@@ -59,6 +59,7 @@ class Phase2Fragment : Fragment() {
     ): View {
         binding = FragmentPhase2Binding.inflate(inflater, container, false)
         count = 0
+        binding.clMcViewData.visibility = View.GONE
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         settingsClient = LocationServices.getSettingsClient(requireActivity())
 
@@ -66,9 +67,7 @@ class Phase2Fragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
                 if (granted) {
                     getCurrentLocation()
-                    Log.d("onCreateView: permission1", true.toString())
                 } else {
-                    Log.d("onCreateView: permission2", false.toString())
                     requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             }
@@ -76,7 +75,6 @@ class Phase2Fragment : Fragment() {
         locationSetting = registerForActivityResult(StartIntentSenderForResult()) {
             when (it.resultCode) {
                 Activity.RESULT_OK -> {
-                    Log.d("locationSetting: ", "true")
                     setObservers()
                     lifecycleScope.launch {
                         binding.clMcViewProgressBar.visibility = View.VISIBLE
@@ -87,7 +85,6 @@ class Phase2Fragment : Fragment() {
 
                 }
                 Activity.RESULT_CANCELED -> {
-                    Log.d("locationSetting: ", "false")
                     gpsState.value = false
                 }
             }
@@ -97,11 +94,10 @@ class Phase2Fragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 when (it.resultCode) {
                     Activity.RESULT_OK -> {
-                        Log.d("locationPermissionSetting: ", "true")
+                        requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                     }
                     Activity.RESULT_CANCELED -> {
-                        //UI Functionalities
-                        Log.d("locationPermissionSetting: ", "false")
+                        requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                     }
                 }
             }
@@ -127,21 +123,17 @@ class Phase2Fragment : Fragment() {
         if (!displayRational) {
             Toast.makeText(
                 requireActivity(),
-                "Location permissions required",
+                getString(R.string.location_permission_required),
                 Toast.LENGTH_LONG
             ).show()
 
-            //UI Functionalities
-
-            Log.d("requestPermissionsElse: ", "false")
-
             binding.clMcViewGpsError.visibility = View.VISIBLE
             binding.clMcViewData.visibility = View.GONE
-            binding.tvMcViewGpsErrorText.text = "Location Permission Required"
+            binding.tvMcViewGpsErrorText.text = getString(R.string.location_permission_required)
             binding.btnGpsError.isClickable = true
-            binding.btnGpsError.text = "Enable GPS Permission"
+            binding.btnGpsError.text = getString(R.string.enable_gps_permission)
+
             binding.btnGpsError.setOnClickListener {
-//                requestLocationPermissionLauncher.launch(permission)
                 val intent = Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 val uri = Uri.fromParts(
@@ -154,14 +146,13 @@ class Phase2Fragment : Fragment() {
                 locationPermissionSetting.launch(intent)
             }
         } else {
-            Log.d("requestPermissionsElse: ", "true")
             requestLocationPermissionLauncher.launch(permission)
         }
     }
 
     private fun getCurrentLocation() {
         settingsClient?.let { settings ->
-            locationRequest = LocationRequest()
+            locationRequest = LocationRequest.create()
             locationRequest.interval = 10000
             locationRequest.fastestInterval = 5000
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -171,7 +162,6 @@ class Phase2Fragment : Fragment() {
             settings
                 .checkLocationSettings(locationSettingsRequest)
                 .addOnSuccessListener {
-                    Log.d("addOnSuccessListener: ", "true")
                     gpsState.value = true
                 }
                 .addOnFailureListener {
@@ -202,24 +192,52 @@ class Phase2Fragment : Fragment() {
                     }
                     Status.SUCCESS -> {
                         if (it.data != null) {
-                            Log.d("setObservers: ", it.data.toString())
                             val weatherData = it.data
                             binding.tvTemperatureText.text = weatherData.current?.tempC.toString().plus("\u2103")
-                            binding.tvDateText.text = weatherData.current?.lastUpdated
+                            binding.tvDateText.text = weatherData.current?.lastUpdated?.let { it1 ->
+                                getFormattedDate(
+                                    it1
+                                )
+                            }
                             binding.tvHumidityText.text = weatherData.current?.humidity.toString().plus("%")
                             binding.tvWindText.text = weatherData.current?.windKph.toString().plus("Kmph")
                             binding.tvConditionText.text = weatherData.current?.condition?.text
                             binding.tvAirQualityText.text = when(weatherData.current?.airQuality?.usEpaIndex) {
-                                1 -> { "Good" }
-                                2 -> { "Moderate" }
-                                3,4,5 -> { "Unhealthy" }
-                                else -> { "Hazardous" }
+                                1 -> { getString(R.string.good) }
+                                2 -> { getString(R.string.moderate) }
+                                3,4,5 -> { getString(R.string.unhealthy) }
+                                else -> { getString(R.string.hazardous) }
                             }
-
+                            when {
+                                weatherData.current?.condition?.text?.lowercase()?.contains("cloud") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.cloudy))
+                                }
+                                weatherData.current?.condition?.text?.lowercase()?.contains("mist") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.mist))
+                                }
+                                weatherData.current?.condition?.text?.lowercase()?.contains("rain") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.rainy))
+                                }
+                                weatherData.current?.condition?.text?.lowercase()?.contains("sunny") == true -> {
+                                    binding.ivWeatherCondition
+                                        .setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),R.drawable.sunny))
+                                }
+                                else -> {
+                                    binding.ivWeatherCondition.setImageDrawable(null)
+                                }
+                            }
                             weatherData.current?.condition?.icon?.let { it1 ->
-                                Log.d( "setObservers: Image",
-                                    it1
-                                )
                                 Glide.with(requireActivity())
                                     .load("https:".plus(it1))
                                     .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
@@ -244,7 +262,6 @@ class Phase2Fragment : Fragment() {
         gpsState.observe(viewLifecycleOwner) {
             if (it != null) {
                 if (it) {
-                    Log.d("locationSettingGPS: ", "true")
                     getLocation()
                     binding.clMcViewProgressBar.visibility = View.GONE
                     binding.clMcViewGpsError.visibility = View.GONE
@@ -253,12 +270,12 @@ class Phase2Fragment : Fragment() {
                     binding.tvMcViewGpsErrorText.text = "Location turned OFF.\nPlease turn On your location"
 
                     binding.btnGpsError.isClickable = true
-                    binding.btnGpsError.text = "Turn ON GPS"
+                    binding.btnGpsError.text = getString(R.string.turn_on_gps)
                     binding.btnGpsError.setOnClickListener {
                         settingsClient?.let { settings ->
-                            locationRequest = LocationRequest()
-                            locationRequest.interval = 10000
-                            locationRequest.fastestInterval = 5000
+                            locationRequest = LocationRequest.create()
+                            locationRequest.interval = 5000
+                            locationRequest.fastestInterval = 2000
                             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
                             val builder = LocationSettingsRequest.Builder()
                             builder.addLocationRequest(locationRequest)
@@ -289,12 +306,10 @@ class Phase2Fragment : Fragment() {
     private fun getLocation() {
         fusedLocationClient?.lastLocation?.addOnSuccessListener {
             try {
-                Log.d("getCurrentLocation: ", "${it.latitude}--${it.longitude}")
                 geocoder = Geocoder(requireActivity(), Locale.getDefault())
                 val addresses = geocoder?.getFromLocation(it.latitude, it.longitude, 1)
                 val city = addresses?.get(0)?.locality
 
-                city?.let { it1 -> Log.d("getCurrentLocation: ", it1) }
                 city?.let { it1 ->
                     binding.tvLocationText.text = it1
                     phase2ViewModel.getWeatherData(
@@ -302,7 +317,24 @@ class Phase2Fragment : Fragment() {
                         city = it1
                     )
                 }
-            } catch (exception: Exception) { }
+            } catch (exception: Exception) {
+                Toast.makeText(requireActivity(), "Error: Restart app again", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun getFormattedDate(timeStamp: String): String {
+        return try {
+            val apiFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+            val  uiFormat = SimpleDateFormat("dd MMM yyyy hh:mm a")
+            uiFormat.format(
+                Date(
+                    apiFormat.parse(timeStamp)!!.time
+                )
+            )
+        } catch (e: Exception) {
+            "-"
         }
     }
 

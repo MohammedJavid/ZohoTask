@@ -13,4 +13,5 @@
     <color name="card_bg_grey">#DCDFEE</color>
     <color name="progress_grey">#545365</color>
     <color name="phase2_grey">#545365</color>
+    <color name="grey">#D7D7D7</color>
 </resources>

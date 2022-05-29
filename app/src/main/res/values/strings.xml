@@ -29,5 +29,11 @@
     <string name="_humidity">Humidity :</string>
     <string name="wind_speed">Wind Speed :</string>
     <string name="turn_on_gps">Turn ON GPS</string>
+    <string name="good">Good</string>
+    <string name="moderate">Moderate</string>
+    <string name="unhealthy">Unhealthy</string>
+    <string name="hazardous">Hazardous</string>
+    <string name="enable_gps_permission">Enable GPS Permission</string>
+    <string name="location_permission_required">Location Permission Required</string>
 
 </resources>
