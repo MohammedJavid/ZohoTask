@@ -6,6 +6,7 @@ import android.content.Intent
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -46,20 +47,26 @@ class Phase2Fragment : Fragment() {
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var geocoder: Geocoder? = null
     private var settingsClient: SettingsClient? = null
+    private lateinit var mLocationCallback: LocationCallback
     private lateinit var locationSetting: ActivityResultLauncher<IntentSenderRequest>
     private lateinit var locationPermissionSetting: ActivityResultLauncher<Intent>
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationSettingsRequest: LocationSettingsRequest
     private var gpsState = MutableLiveData<Boolean?>()
-    private var count = 0
+
+    companion object {
+        var city: String? = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPhase2Binding.inflate(inflater, container, false)
-        count = 0
+        binding.clMcViewProgressBar.visibility = View.VISIBLE
         binding.clMcViewData.visibility = View.GONE
+        binding.clMcViewError.visibility = View.GONE
+        binding.clMcViewGpsError.visibility = View.GONE
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         settingsClient = LocationServices.getSettingsClient(requireActivity())
 
@@ -79,8 +86,7 @@ class Phase2Fragment : Fragment() {
                     lifecycleScope.launch {
                         binding.clMcViewProgressBar.visibility = View.VISIBLE
                         binding.btnGpsError.isClickable = false
-                        delay(5000)
-                        gpsState.value = true
+                        getCurrentLocation()
                     }
 
                 }
@@ -105,6 +111,17 @@ class Phase2Fragment : Fragment() {
         requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         setObservers()
 
+        mLocationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+                locationResult.lastLocation.let { location ->
+                    geocoder = Geocoder(requireActivity(), Locale.getDefault())
+                    val addresses =
+                        geocoder?.getFromLocation(location.latitude, location.longitude, 1)
+                    city = addresses?.get(0)?.locality
+                }
+            }
+        }
         return binding.root
     }
 
@@ -153,8 +170,8 @@ class Phase2Fragment : Fragment() {
     private fun getCurrentLocation() {
         settingsClient?.let { settings ->
             locationRequest = LocationRequest.create()
-            locationRequest.interval = 10000
-            locationRequest.fastestInterval = 5000
+            locationRequest.interval = 5000
+            locationRequest.fastestInterval = 2000
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             val builder = LocationSettingsRequest.Builder()
             builder.addLocationRequest(locationRequest)
@@ -162,6 +179,11 @@ class Phase2Fragment : Fragment() {
             settings
                 .checkLocationSettings(locationSettingsRequest)
                 .addOnSuccessListener {
+                    fusedLocationClient?.requestLocationUpdates(
+                        locationRequest,
+                        mLocationCallback, Looper.getMainLooper()
+                    )
+
                     gpsState.value = true
                 }
                 .addOnFailureListener {
@@ -189,55 +211,83 @@ class Phase2Fragment : Fragment() {
                         binding.clMcViewProgressBar.visibility = View.VISIBLE
                         binding.clMcViewData.visibility = View.GONE
                         binding.clMcViewError.visibility = View.GONE
+                        binding.clMcViewGpsError.visibility = View.GONE
                     }
                     Status.SUCCESS -> {
                         if (it.data != null) {
                             val weatherData = it.data
-                            binding.tvTemperatureText.text = weatherData.current?.tempC.toString().plus("\u2103")
+                            binding.tvTemperatureText.text =
+                                weatherData.current?.tempC.toString().plus("\u2103")
                             binding.tvDateText.text = weatherData.current?.lastUpdated?.let { it1 ->
                                 getFormattedDate(
                                     it1
                                 )
                             }
-                            binding.tvHumidityText.text = weatherData.current?.humidity.toString().plus("%")
-                            binding.tvWindText.text = weatherData.current?.windKph.toString().plus("Kmph")
+                            binding.tvHumidityText.text =
+                                weatherData.current?.humidity.toString().plus("%")
+                            binding.tvWindText.text =
+                                weatherData.current?.windKph.toString().plus("Kmph")
                             binding.tvConditionText.text = weatherData.current?.condition?.text
-                            binding.tvAirQualityText.text = when(weatherData.current?.airQuality?.usEpaIndex) {
-                                1 -> { getString(R.string.good) }
-                                2 -> { getString(R.string.moderate) }
-                                3,4,5 -> { getString(R.string.unhealthy) }
-                                else -> { getString(R.string.hazardous) }
-                            }
+                            binding.tvAirQualityText.text =
+                                when (weatherData.current?.airQuality?.usEpaIndex) {
+                                    1 -> {
+                                        getString(R.string.good)
+                                    }
+                                    2 -> {
+                                        getString(R.string.moderate)
+                                    }
+                                    3, 4, 5 -> {
+                                        getString(R.string.unhealthy)
+                                    }
+                                    else -> {
+                                        getString(R.string.hazardous)
+                                    }
+                                }
                             when {
-                                weatherData.current?.condition?.text?.lowercase()?.contains("cloud") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("cloud") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.cloudy))
+                                                requireActivity(), R.drawable.cloudy
+                                            )
+                                        )
                                 }
-                                weatherData.current?.condition?.text?.lowercase()?.contains("mist") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("mist") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.mist))
+                                                requireActivity(), R.drawable.mist
+                                            )
+                                        )
                                 }
-                                weatherData.current?.condition?.text?.lowercase()?.contains("fog") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("fog") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.mist))
+                                                requireActivity(), R.drawable.mist
+                                            )
+                                        )
                                 }
-                                weatherData.current?.condition?.text?.lowercase()?.contains("rain") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("rain") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.rainy))
+                                                requireActivity(), R.drawable.rainy
+                                            )
+                                        )
                                 }
-                                weatherData.current?.condition?.text?.lowercase()?.contains("sunny") == true -> {
+                                weatherData.current?.condition?.text?.lowercase()
+                                    ?.contains("sunny") == true -> {
                                     binding.ivWeatherCondition
                                         .setImageDrawable(
                                             ContextCompat.getDrawable(
-                                                requireActivity(),R.drawable.sunny))
+                                                requireActivity(), R.drawable.sunny
+                                            )
+                                        )
                                 }
                                 else -> {
                                     binding.ivWeatherCondition.setImageDrawable(null)
@@ -253,6 +303,7 @@ class Phase2Fragment : Fragment() {
                             binding.clMcViewProgressBar.visibility = View.GONE
                             binding.clMcViewData.visibility = View.VISIBLE
                             binding.clMcViewError.visibility = View.GONE
+                            binding.clMcViewGpsError.visibility = View.GONE
                         }
                     }
                     Status.ERROR -> {
@@ -260,6 +311,7 @@ class Phase2Fragment : Fragment() {
                         binding.clMcViewData.visibility = View.GONE
                         binding.tvMcViewErrorText.text = it.message
                         binding.clMcViewError.visibility = View.VISIBLE
+                        binding.clMcViewGpsError.visibility = View.GONE
                     }
                 }
             }
@@ -269,11 +321,9 @@ class Phase2Fragment : Fragment() {
             if (it != null) {
                 if (it) {
                     getLocation()
-                    binding.clMcViewProgressBar.visibility = View.GONE
-                    binding.clMcViewGpsError.visibility = View.GONE
-                    binding.clMcViewData.visibility = View.VISIBLE
                 } else {
-                    binding.tvMcViewGpsErrorText.text = "Location turned OFF.\nPlease turn On your location"
+                    binding.tvMcViewGpsErrorText.text =
+                        "Location turned OFF.\nPlease turn On your location"
 
                     binding.btnGpsError.isClickable = true
                     binding.btnGpsError.text = getString(R.string.turn_on_gps)
@@ -304,28 +354,22 @@ class Phase2Fragment : Fragment() {
                     }
                     binding.clMcViewGpsError.visibility = View.VISIBLE
                     binding.clMcViewData.visibility = View.GONE
+                    binding.clMcViewProgressBar.visibility = View.GONE
                 }
             }
         }
     }
 
     private fun getLocation() {
-        fusedLocationClient?.lastLocation?.addOnSuccessListener {
-            try {
-                geocoder = Geocoder(requireActivity(), Locale.getDefault())
-                val addresses = geocoder?.getFromLocation(it.latitude, it.longitude, 1)
-                val city = addresses?.get(0)?.locality
 
-                city?.let { it1 ->
-                    binding.tvLocationText.text = it1
-                    phase2ViewModel.getWeatherData(
-                        url = getString(R.string.weather_url),
-                        city = it1
-                    )
-                }
-            } catch (exception: Exception) {
-                Toast.makeText(requireActivity(), "Error: Restart app again", Toast.LENGTH_SHORT)
-                    .show()
+        lifecycleScope.launch {
+            delay(3000)
+            city?.let { it1 ->
+                binding.tvLocationText.text = it1
+                phase2ViewModel.getWeatherData(
+                    url = getString(R.string.weather_url),
+                    city = it1
+                )
             }
         }
     }
@@ -333,7 +377,7 @@ class Phase2Fragment : Fragment() {
     private fun getFormattedDate(timeStamp: String): String {
         return try {
             val apiFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
-            val  uiFormat = SimpleDateFormat("dd MMM yyyy hh:mm a")
+            val uiFormat = SimpleDateFormat("dd MMM yyyy hh:mm a")
             uiFormat.format(
                 Date(
                     apiFormat.parse(timeStamp)!!.time
@@ -342,6 +386,19 @@ class Phase2Fragment : Fragment() {
         } catch (e: Exception) {
             "-"
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fusedLocationClient?.let { fuse ->
+            fuse
+                .removeLocationUpdates(mLocationCallback)
+                .addOnCompleteListener {
+                }
+        }
+        fusedLocationClient = null
+        settingsClient = null
+        geocoder = null
     }
 
 }
