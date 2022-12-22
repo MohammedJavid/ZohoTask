@@ -72,6 +72,7 @@ class Phase1Fragment : Fragment() {
         }
     }
 
+    // paging adapter for displaying list
     private fun setPagingAdapter() {
         adapter = ResultListAdapter(
             context = requireActivity(),
